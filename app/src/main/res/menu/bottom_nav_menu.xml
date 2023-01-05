@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:tooltipText="Inicio"
+        android:title="Inicio" />
+    <item android:id="@+id/planning"
+        android:icon="@drawable/ic_calendar"
+        android:tooltipText="Planificar"
+        android:title="Planificar" />
+    <item android:id="@+id/explorer"
+        android:icon="@drawable/ic_search"
+        android:tooltipText="Explorar"
+        android:title="Explorar" />
+</menu>
