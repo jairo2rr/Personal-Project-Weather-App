@@ -109,16 +109,16 @@
 
         <TextView
             android:id="@+id/tvVarianza"
-            android:layout_width="wrap_content"
+            android:layout_width="46dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            tools:text="19° - 23°"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvTemperature"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvTemperature"
-            app:layout_constraintTop_toTopOf="@+id/tvTemperature" />
+            app:layout_constraintTop_toTopOf="@+id/tvTemperature"
+            tools:text="19° - 23°" />
 
         <Button
             android:id="@+id/btnVerMas"

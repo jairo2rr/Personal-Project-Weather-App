@@ -50,19 +50,15 @@ class HomeFragment : Fragment() {
 
         val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather)
 
-        binding.tvCityRegion.text = "Miraflores, Lima"
         binding.recyclerNextDays.adapter = weatherNextDayAdapter
-        if(latitude!=null){
-            lifecycleScope.launch{
-                val apikey = getString(R.string.api_key)
-                val data = WeatherDbClient.service.getPrincipalData(latitude!!,longitude!!,apikey)
-                val firstData = data.list[0]
-                weatherNextDayAdapter.listWeather = data.list
-                weatherNextDayAdapter.notifyDataSetChanged()
-
-                updateInfoCity(data.city)
-                changePrincipalCard(firstData)
-            }
+        lifecycleScope.launch {
+            val apikey = getString(R.string.api_key)
+            val data = WeatherDbClient.service.getPrincipalData(latitude!!, longitude!!, apikey)
+            val firstData = data.list[0]
+            weatherNextDayAdapter.listWeather = data.list
+            weatherNextDayAdapter.notifyDataSetChanged()
+            updateInfoCity(data.city)
+            changePrincipalCard(firstData)
         }
     }
 
@@ -77,7 +73,7 @@ class HomeFragment : Fragment() {
         binding.tvEstado.text = data.weather[0].description
         binding.tvDay.text = data.dt_txt
         binding.tvTemperature.text = "${data.main.temp}°"
-        binding.tvVarianza.text = "Puede alcanzar hasta ${data.main.temp_max}°"
+        binding.tvVarianza.text = "${data.main.temp_min}° - ${data.main.temp_max}"
     }
 
     companion object {
