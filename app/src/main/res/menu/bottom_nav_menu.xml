@@ -3,13 +3,16 @@
     <item android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:tooltipText="Inicio"
+        android:textAppearance="@style/CustomTextBodyMedium"
         android:title="Inicio" />
     <item android:id="@+id/planning"
         android:icon="@drawable/ic_calendar"
         android:tooltipText="Planificar"
+        android:textAppearance="@style/CustomTextBodyMedium"
         android:title="Planificar" />
     <item android:id="@+id/explorer"
         android:icon="@drawable/ic_search"
         android:tooltipText="Explorar"
+        android:textAppearance="@style/CustomTextBodyMedium"
         android:title="Explorar" />
 </menu>

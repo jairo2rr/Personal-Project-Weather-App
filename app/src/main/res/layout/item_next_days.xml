@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:textAppearance="@style/CustomTextBodyMedium"
             android:text="Martes 3"
             android:gravity="center_horizontal|center_vertical"/>
         <ImageView
@@ -30,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:textAppearance="@style/CustomTextBodyMedium"
             android:textSize="20sp"
             android:text="21°"
             android:gravity="center_horizontal|center_vertical"/>
