@@ -1,7 +1,6 @@
-package com.example.customweatherapp
+package com.example.customweatherapp.main
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +9,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initHomeFragment() {
-        Log.d("getLocation", "Inicio de fragment home")
         val bundle = Bundle().apply {
             putDouble("LATITUDE", latitude)
             putDouble("LONGITUDE", longitude)

@@ -6,4 +6,13 @@
 
     <string name="btn_vermas">Ver más</string>
     <string name="title_proximosdias">Próximos días</string>
+    <string name="title_duringday">Durante el día</string>
+
+    <!--Para informacion en view: weather per day-->
+    <string name="txt_levelsea">Nivel\ndel mar</string>
+    <string name="txt_groundprs">Presión\ndel suelo</string>
+    <string name="txt_atmosfericprs">Presión\natmosferica</string>
+    <string name="txt_humidity">Humedad</string>
+    <string name="txt_visibility">Visibilidad</string>
+    <string name="txt_probop">Probabilidad\nde precipitación</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.customweatherapp
+package com.example.customweatherapp.main
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
 import com.example.customweatherapp.model.City
 import com.example.customweatherapp.model.WeatherPerDay
@@ -34,7 +35,6 @@ class HomeFragment : Fragment() {
             latitude = it.getDouble(LATITUDE)
             longitude = it.getDouble(LONGITUDE)
         }
-        Log.d("LATITUDEEE","Latitude: $latitude\n Longitude: $longitude")
     }
 
     override fun onCreateView(
