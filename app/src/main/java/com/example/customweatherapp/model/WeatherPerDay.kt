@@ -1,5 +1,7 @@
 package com.example.customweatherapp.model
 
+import java.io.Serializable
+
 data class WeatherPerDay(
     val clouds: Clouds,
     val dt: Int,
@@ -10,4 +12,4 @@ data class WeatherPerDay(
     val visibility: Int,
     val weather: List<Weather>,
     val wind: Wind
-)
+):Serializable

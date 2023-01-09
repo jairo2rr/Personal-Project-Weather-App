@@ -17,8 +17,9 @@
         android:theme="@style/Theme.CustomWeatherApp"
         tools:targetApi="31">
         <activity
-            android:name=".WeatherDayActivity"
-            android:exported="false" />
+            android:parentActivityName=".main.MainActivity"
+            android:name=".main.WeatherDayActivity"
+            android:exported="false"/>
         <activity
             android:name=".main.MainActivity"
             android:exported="true">

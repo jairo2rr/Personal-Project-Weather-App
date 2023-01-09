@@ -45,13 +45,13 @@
                 tools:text="Nublado\nMuchas nubes en el cielo" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imgWeather"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvClima"
                 app:layout_constraintTop_toBottomOf="@+id/tvClima"
-                app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                android:src="@drawable/ic_baseline_wb_sunny_24" />
 
             <TextView
                 android:id="@+id/tvHour"
@@ -67,10 +67,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="40sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintBottom_toBottomOf="@+id/imgWeather"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView"
+                app:layout_constraintStart_toEndOf="@+id/imgWeather"
+                app:layout_constraintTop_toTopOf="@+id/imgWeather"
                 tools:text="20.21°" />
 
             <TextView
@@ -110,6 +110,8 @@
             android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -121,94 +123,100 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
             android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_extra_weather"
             android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvCardsHour"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/rvCardsHour">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView2"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_level_sea" />
 
                     <TextView
                         android:id="@+id/tvLevelSea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_levelsea"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:text="@string/txt_levelsea" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView3"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_ground_pressure" />
 
                     <TextView
                         android:id="@+id/tvGroundprs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_groundprs"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:text="@string/txt_groundprs" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView4"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_atmosferic_pressure" />
 
                     <TextView
                         android:id="@+id/tvAtmosfericprs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_atmosfericprs"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:text="@string/txt_atmosfericprs" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -217,83 +225,87 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView5"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_humidity" />
 
                     <TextView
                         android:id="@+id/tvHumidity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_humidity"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:text="@string/txt_humidity" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView6"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_visibility" />
 
                     <TextView
                         android:id="@+id/tvVisibility"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/txt_visibility"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:text="@string/txt_visibility" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                        android:src="@drawable/ic_pobop" />
 
                     <TextView
                         android:id="@+id/tvProbop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="3000"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        tools:text="3000" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/txt_probop"
-                        android:gravity="center"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                 </LinearLayout>
             </LinearLayout>
 

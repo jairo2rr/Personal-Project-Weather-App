@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="160dp"
+    android:orientation="vertical"
+    android:padding="12dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_card_today"
+        android:elevation="2dp"
+        android:gravity="center_horizontal"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textAppearance="@style/CustomTextBodyMedium"
+            android:text="Martes 3"
+            android:gravity="center_horizontal|center_vertical"/>
+        <ImageView
+            android:id="@+id/imgIconWeather"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_wb_sunny_24"/>
+        <TextView
+            android:id="@+id/tvTemperature"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textAppearance="@style/CustomTextBodyMedium"
+            android:textSize="20sp"
+            android:text="21°"
+            android:gravity="center_horizontal|center_vertical"/>
+    </LinearLayout>
+
+</LinearLayout>

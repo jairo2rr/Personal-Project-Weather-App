@@ -1,7 +1,7 @@
 package com.example.customweatherapp.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +11,13 @@ import coil.load
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
 import com.example.customweatherapp.model.City
+import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.WeatherPerDay
 import com.example.customweatherapp.model.service.WeatherDbClient
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val LATITUDE = "LATITUDE"
 private const val LONGITUDE = "LONGITUDE"
@@ -48,17 +48,21 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather)
+        val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather,"perday")
 
         binding.recyclerNextDays.adapter = weatherNextDayAdapter
         lifecycleScope.launch {
             val apikey = getString(R.string.api_key)
             val data = WeatherDbClient.service.getPrincipalData(latitude!!, longitude!!, apikey)
             val firstData = data.list[0]
-            weatherNextDayAdapter.listWeather = data.list
+            val dataFiltered = getFilterHourPerDay(data,firstData.dt_txt)
+            weatherNextDayAdapter.listWeather = dataFiltered
             weatherNextDayAdapter.notifyDataSetChanged()
             updateInfoCity(data.city)
             changePrincipalCard(firstData)
+            binding.btnVerMas.setOnClickListener {
+                initWeatherDayActivity(data)
+            }
         }
     }
 
@@ -71,9 +75,25 @@ class HomeFragment : Fragment() {
         binding.imgIcon.load("https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png")
         binding.tvClima.text = data.weather[0].main
         binding.tvEstado.text = data.weather[0].description
-        binding.tvDay.text = data.dt_txt
+        val date = data.getDateComplete()
+        binding.tvDay.text = date
         binding.tvTemperature.text = "${data.main.temp}°"
         binding.tvVarianza.text = "${data.main.temp_min}° - ${data.main.temp_max}"
+    }
+
+    private fun initWeatherDayActivity(data:PrincipalData){
+        val intent = Intent(binding.root.context,WeatherDayActivity::class.java).apply {
+            putExtra("data",data)
+            putExtra("dt_txt",data.list[0].dt_txt)
+        }
+        startActivity(intent)
+    }
+
+    private fun getFilterHourPerDay(data:PrincipalData, time:String?):List<WeatherPerDay>{
+        if(time == null) return emptyList()
+        return data.list.filter {
+                weather -> getHour(weather.dt_txt) == getHour(time)
+        }
     }
 
     companion object {

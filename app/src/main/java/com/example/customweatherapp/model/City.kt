@@ -1,5 +1,7 @@
 package com.example.customweatherapp.model
 
+import java.io.Serializable
+
 data class City(
     val coord: Coord,
     val country: String,
@@ -9,4 +11,4 @@ data class City(
     val sunrise: Int,
     val sunset: Int,
     val timezone: Int
-)
+):Serializable
