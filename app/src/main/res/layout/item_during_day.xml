@@ -34,7 +34,7 @@
             android:textAppearance="@style/CustomTextBodyMedium"
             android:textSize="20sp"
             android:text="21°"
-            android:gravity="center_horizontal|center_vertical"/>
+            android:gravity="center_horizontal|center_vertical" />
     </LinearLayout>
 
 </LinearLayout>
