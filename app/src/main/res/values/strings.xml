@@ -15,4 +15,5 @@
     <string name="txt_humidity">Humedad</string>
     <string name="txt_visibility">Visibilidad</string>
     <string name="txt_probop">Probabilidad\nde precipitación</string>
+    <string name="title_planning">Planifica</string>
 </resources>

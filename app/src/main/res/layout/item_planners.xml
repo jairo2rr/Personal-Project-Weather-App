@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="@color/light_gray"
+    android:padding="16dp">
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        tools:srcCompat="@drawable/ic_humidity"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:text="Lunes, 9 de enero\nNublado"
+        android:paddingStart="16dp"
+        android:gravity="center|start"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:text="20.92°"
+        android:paddingEnd="16dp"
+        android:textSize="18sp"
+        android:gravity="center_vertical|end"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar"/>
+</LinearLayout>

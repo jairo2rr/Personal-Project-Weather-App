@@ -44,9 +44,19 @@ class MainActivity : AppCompatActivity() {
                     initHomeFragment()
                     true
                 }
+                R.id.planning -> {
+                    initPlanningFragment()
+                    true
+                }
                 else -> false
             }
         }
+    }
+
+    private fun initPlanningFragment() {
+        val planningFragment = PlanningFragment()
+        supportFragmentManager.beginTransaction().replace(binding.fragmentReplacer.id,planningFragment)
+            .commit()
     }
 
     private fun initHomeFragment() {
