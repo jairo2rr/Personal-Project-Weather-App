@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
+import com.example.customweatherapp.main.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.model.City
 import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.WeatherPerDay
@@ -23,11 +25,13 @@ private const val LATITUDE = "LATITUDE"
 private const val LONGITUDE = "LONGITUDE"
 
 class HomeFragment : Fragment() {
-    private var latitude:Double? = null
+    private var latitude: Double? = null
     private var longitude: Double? = null
 
-    private lateinit var binding :FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
     private val listWeather = emptyList<WeatherPerDay>()
+
+    private var dataStoraged: PrincipalData? = prefers.getData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class HomeFragment : Fragment() {
             latitude = it.getDouble(LATITUDE)
             longitude = it.getDouble(LONGITUDE)
         }
+
     }
 
     override fun onCreateView(
@@ -48,21 +53,36 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather,"perday")
+        val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather, "perday")
 
         binding.recyclerNextDays.adapter = weatherNextDayAdapter
         lifecycleScope.launch {
             val apikey = getString(R.string.api_key)
-            val data = WeatherDbClient.service.getPrincipalData(latitude!!, longitude!!, apikey)
-            val firstData = data.list[0]
-            val dataFiltered = getFilterHourPerDay(data,firstData.dt_txt)
-            weatherNextDayAdapter.listWeather = dataFiltered
-            weatherNextDayAdapter.notifyDataSetChanged()
-            updateInfoCity(data.city)
-            changePrincipalCard(firstData)
-            binding.btnVerMas.setOnClickListener {
-                initWeatherDayActivity(data)
+            var data:PrincipalData? = WeatherDbClient.service.getPrincipalData(latitude!!, longitude!!, apikey)
+            if (data == null) {
+                Toast.makeText(view.context, "Necesita conexion a internet", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                prefers.saveData(data)
+                dataStoraged = prefers.getData()
             }
+            if(dataStoraged != null){
+                data = dataStoraged
+                val firstData = data!!.list[0]
+                val dataFiltered = getFilterHourPerDay(data, firstData.dt_txt)
+                weatherNextDayAdapter.listWeather = dataFiltered
+                weatherNextDayAdapter.notifyDataSetChanged()
+                updateInfoCity(data.city)
+                changePrincipalCard(firstData)
+                binding.btnVerMas.setOnClickListener {
+                    initWeatherDayActivity(data)
+                }
+            }else{
+                Toast.makeText(view.context, "Necesita activar la localizacion para actualizar datos.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+
         }
     }
 
@@ -71,7 +91,7 @@ class HomeFragment : Fragment() {
         binding.tvCountry.text = city.country
     }
 
-    private fun changePrincipalCard(data:WeatherPerDay) {
+    private fun changePrincipalCard(data: WeatherPerDay) {
         binding.imgIcon.load("https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png")
         binding.tvClima.text = data.weather[0].main
         binding.tvEstado.text = data.weather[0].description
@@ -81,18 +101,18 @@ class HomeFragment : Fragment() {
         binding.tvVarianza.text = "${data.main.temp_min}° - ${data.main.temp_max}"
     }
 
-    private fun initWeatherDayActivity(data:PrincipalData){
-        val intent = Intent(binding.root.context,WeatherDayActivity::class.java).apply {
-            putExtra("data",data)
-            putExtra("dt_txt",data.list[0].dt_txt)
+    private fun initWeatherDayActivity(data: PrincipalData) {
+        val intent = Intent(binding.root.context, WeatherDayActivity::class.java).apply {
+            putExtra("data", data)
+            putExtra("dt_txt", data.list[0].dt_txt)
         }
         startActivity(intent)
     }
 
-    private fun getFilterHourPerDay(data:PrincipalData, time:String?):List<WeatherPerDay>{
-        if(time == null) return emptyList()
-        return data.list.filter {
-                weather -> getHour(weather.dt_txt) == getHour(time)
+    private fun getFilterHourPerDay(data: PrincipalData, time: String?): List<WeatherPerDay> {
+        if (time == null) return emptyList()
+        return data.list.filter { weather ->
+            getHour(weather.dt_txt) == getHour(time)
         }
     }
 

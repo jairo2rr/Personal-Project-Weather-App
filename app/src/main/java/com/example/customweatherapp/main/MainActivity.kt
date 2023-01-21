@@ -11,6 +11,8 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.ActivityMainBinding
+import com.example.customweatherapp.main.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.model.PrincipalData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     /*Default values lat and lon*/
     private var latitude = -12.04318
     private var longitude = -77.02824
+
+    private var locationOff: Boolean = false
 
     private var requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -48,6 +52,10 @@ class MainActivity : AppCompatActivity() {
                     initPlanningFragment()
                     true
                 }
+                R.id.explorer ->{
+                    initExplorerFragment()
+                    true
+                }
                 else -> false
             }
         }
@@ -55,11 +63,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun initPlanningFragment() {
         val planningFragment = PlanningFragment()
-        supportFragmentManager.beginTransaction().replace(binding.fragmentReplacer.id,planningFragment)
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentReplacer.id, planningFragment)
+            .commit()
+    }
+
+    private fun initExplorerFragment() {
+        val explorerFragment = ExplorerFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentReplacer.id, explorerFragment)
             .commit()
     }
 
     private fun initHomeFragment() {
+        var data: PrincipalData? = null
+        if (locationOff) {
+            data = prefers.getData()
+        }
+        if (data != null) {
+            latitude = data.city.coord.lat
+            longitude = data.city.coord.lon
+        }
         val bundle = Bundle().apply {
             putDouble("LATITUDE", latitude)
             putDouble("LONGITUDE", longitude)
@@ -77,14 +101,22 @@ class MainActivity : AppCompatActivity() {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
-                    lifecycleScope.launch(Dispatchers.IO){
+                    lifecycleScope.launch(Dispatchers.IO) {
                         fusedLocationClient =
                             LocationServices.getFusedLocationProviderClient(this@MainActivity)
                         fusedLocationClient.lastLocation.addOnCompleteListener {
+
                             if (it.result != null) {
-                                latitude = it.result.latitude
-                                longitude = it.result.longitude
+
+                                latitude = it.result!!.latitude
+                                longitude = it.result!!.longitude
+                            } else {
+                                locationOff = true
                             }
+                            Log.d(
+                                "debugLocation",
+                                "Lat: ${it.result}, Lon: ${it.result}"
+                            )
                             initHomeFragment()
                         }
                     }

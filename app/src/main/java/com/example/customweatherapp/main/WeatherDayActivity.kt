@@ -3,21 +3,12 @@ package com.example.customweatherapp.main
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
-import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.example.customweatherapp.databinding.ActivityMainBinding
 import com.example.customweatherapp.databinding.ActivityWeatherDayBinding
 import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.WeatherPerDay
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class WeatherDayActivity : AppCompatActivity() {
