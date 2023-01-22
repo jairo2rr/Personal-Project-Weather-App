@@ -1,5 +1,6 @@
 package com.example.customweatherapp.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,29 +13,25 @@ import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentExplorerBinding
 import com.example.customweatherapp.model.City
+import com.example.customweatherapp.model.explorar.CityLocalized
+import com.example.customweatherapp.model.explorar.CityLocalizedItem
 import com.example.customweatherapp.model.service.WeatherDbClient
+import com.example.customweatherapp.recycler.CityLocalizedAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 class ExplorerFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
-
     private lateinit var binding:FragmentExplorerBinding
-    private lateinit var listCities:MutableList<String>
+    private lateinit var listCities:CityLocalized
+    private lateinit var adapter:CityLocalizedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        listCities = mutableListOf("Peru","Argentina","Colombia","Paraguay")
+        listCities = CityLocalized()
+        adapter = CityLocalizedAdapter(listCities)
     }
 
     override fun onCreateView(
@@ -47,26 +44,53 @@ class ExplorerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView2.adapter = adapter
+        /*Probando corrutina*/
+        /*binding.btnPruebaCorrutina.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.Main) {
+                val numberMystery = withContext(Dispatchers.IO){getMysteryValue()}
+                context?.toast("This number: $numberMystery")
+            }
+        }*/
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d("getTextSubmit","This: $query")
                 return false
             }
 
             override fun onQueryTextChange(textCity: String?): Boolean {
+                Log.d("getTextCity","This: $textCity")
                 filterCities(textCity)
                 return true
             }
         })
     }
+
+    /*Funcion de prueba*/
+    private fun getMysteryValue():Int{
+        Thread.sleep(2000)
+        return 0
+    }
+
+    fun Context.toast(message:String){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    }
+
     private fun filterCities(textCity: String?) {
         val apikey = getString(R.string.api_key)
         var newList = mutableListOf<String>()
-        if(textCity != null){
+        if(textCity==""){
+            adapter.listCities = CityLocalized()
+            adapter.notifyDataSetChanged()
+        }else if(textCity != null){
             lifecycleScope.launch(Dispatchers.IO) {
-                val citiesLocalized = WeatherDbClient.service.getCities(city = textCity, apikey = apikey)
+                Log.d("getText","Data:${textCity.toMediaTypeOrNull()}")
+                val citiesLocalized = WeatherDbClient.service.getCities(city = textCity!!, apikey = apikey)
                 if(citiesLocalized != null){
-                    citiesLocalized.forEach {
-                            city -> println("City: ${city.name}, Country: ${city.country}")
+                    withContext(Dispatchers.Main){
+                        adapter.listCities = citiesLocalized
+                        adapter.notifyDataSetChanged()
                     }
                 }else{
                     Log.d("Citiess","Errorrrrr!")
@@ -81,8 +105,7 @@ class ExplorerFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             ExplorerFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    //The arguments with their values
                 }
             }
     }

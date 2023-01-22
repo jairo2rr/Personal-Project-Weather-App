@@ -10,5 +10,5 @@ interface WeatherDbService {
     suspend fun getPrincipalData(@Query("lat") latitud:Double,@Query("lon") longitud:Double,@Query("appid") apikey:String):PrincipalData
 
     @GET("geo/1.0/direct")
-    suspend fun getCities(@Query("q") city:String,@Query("limit") limit:Int = 5,@Query("appid") apikey:String):CityLocalized
+    suspend fun getCities(@Query("q") city:String,@Query("limit") limit:Int = 5,@Query("appid") apikey:String):CityLocalized?
 }
