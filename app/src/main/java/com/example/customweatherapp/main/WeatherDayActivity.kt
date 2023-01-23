@@ -47,7 +47,7 @@ class WeatherDayActivity : AppCompatActivity() {
         }
         setPrincipalCard(data)
         binding.rvCardsHour.adapter = weatherDuringDay
-
+        binding.tvCityName.text = data?.city?.name
         setExtraInformation(data)
     }
 

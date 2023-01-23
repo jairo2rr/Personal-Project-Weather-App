@@ -1,6 +1,7 @@
 package com.example.customweatherapp.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentExplorerBinding
 import com.example.customweatherapp.model.City
+import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.explorar.CityLocalized
 import com.example.customweatherapp.model.explorar.CityLocalizedItem
 import com.example.customweatherapp.model.service.WeatherDbClient
@@ -31,7 +33,22 @@ class ExplorerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         listCities = CityLocalized()
-        adapter = CityLocalizedAdapter(listCities)
+        val apiKey = getString(R.string.api_key)
+        adapter = CityLocalizedAdapter(listCities){
+            city ->
+                lifecycleScope.launch(Dispatchers.IO){
+                    val data = WeatherDbClient.service.getPrincipalData(city.lat,city.lon,apiKey)
+                    initWeatherActivity(data)
+                }
+        }
+    }
+
+    private fun initWeatherActivity(data: PrincipalData) {
+        val intent = Intent(context,WeatherDayActivity::class.java).apply {
+            putExtra("data",data)
+            putExtra("dt_txt",data.list[0].dt_txt)
+        }
+        startActivity(intent)
     }
 
     override fun onCreateView(
@@ -46,32 +63,18 @@ class ExplorerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView2.adapter = adapter
-        /*Probando corrutina*/
-        /*binding.btnPruebaCorrutina.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main) {
-                val numberMystery = withContext(Dispatchers.IO){getMysteryValue()}
-                context?.toast("This number: $numberMystery")
-            }
-        }*/
         binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("getTextSubmit","This: $query")
                 return false
             }
 
             override fun onQueryTextChange(textCity: String?): Boolean {
-                Log.d("getTextCity","This: $textCity")
                 filterCities(textCity)
                 return true
             }
         })
     }
 
-    /*Funcion de prueba*/
-    private fun getMysteryValue():Int{
-        Thread.sleep(2000)
-        return 0
-    }
 
     fun Context.toast(message:String){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
