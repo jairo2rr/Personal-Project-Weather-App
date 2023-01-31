@@ -11,7 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.ActivityMainBinding
-import com.example.customweatherapp.main.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.model.PrincipalData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

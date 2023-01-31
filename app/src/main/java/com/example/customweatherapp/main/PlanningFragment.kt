@@ -3,30 +3,28 @@ package com.example.customweatherapp.main
 import android.content.ClipData.Item
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentPlanningBinding
 import com.example.customweatherapp.databinding.ItemPlannersBinding
+import com.example.customweatherapp.model.plan.ListPlans
+import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.recycler.PlansAdapter
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class PlanningFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
+    private var listPlans:ListPlans? = prefers.getListPlans()
     private lateinit var binding:FragmentPlanningBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -42,6 +40,16 @@ class PlanningFragment : Fragment() {
         binding.fabAddPlan.setOnClickListener {
             initActivityAddPlan()
         }
+        Log.d("ext","This:${listPlans}")
+        if(listPlans == null || listPlans!!.isEmpty()){
+            binding.recyclerView.isVisible = false
+        }else{
+            var adapterPlan = PlansAdapter(listPlans!!)
+            binding.tvNoPlans.isGone = true
+            binding.imgNoPlans.isGone = true
+            binding.recyclerView.adapter = adapterPlan
+        }
+
     }
 
     private fun initActivityAddPlan() {
@@ -54,8 +62,6 @@ class PlanningFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             PlanningFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

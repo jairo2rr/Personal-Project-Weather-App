@@ -22,4 +22,5 @@
     <string name="txt_notification_plan">Crear recordatorio</string>
     <string name="txt_select_date">Escoger fecha</string>
     <string name="txt_btn_save_plan">Guardar plan</string>
+    <string name="no_plans_text">Aun no agregas un plan\npara tus actividades\nfavoritas</string>
 </resources>

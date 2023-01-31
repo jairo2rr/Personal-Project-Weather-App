@@ -1,33 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:layout_marginVertical="10dp"
     android:background="@color/light_gray"
-    android:padding="16dp"
-    android:layout_marginVertical="10dp">
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        tools:srcCompat="@drawable/ic_humidity"/>
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imgIconPlan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:srcCompat="@drawable/ic_humidity" />
+        <TextView
+            android:id="@+id/tvTemperaturePlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="20.97°C"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/tvTitlePlan"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:text="Lunes, 9 de enero\nNublado"
+        android:layout_weight="3"
+        android:gravity="center|start"
+        android:textSize="16sp"
         android:paddingStart="16dp"
-        android:gravity="center|start"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:text="20.92°"
-        android:paddingEnd="16dp"
-        android:textSize="18sp"
-        android:gravity="center_vertical|end"/>
-    <Button
+        android:textColor="@color/black"
+        tools:text="Dia de playa!" />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Editar"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvDatePlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            tools:text="14/02"
+            android:textColor="@color/black"
+            android:gravity="end"
+            android:padding="0dp"/>
+
+        <TextView
+            android:id="@+id/tvHourPlan"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="10:00 am"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgGoToPlan"
+        android:layout_width="wrap_content"
+        android:paddingStart="10dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_arrow_right_small" />
 </LinearLayout>

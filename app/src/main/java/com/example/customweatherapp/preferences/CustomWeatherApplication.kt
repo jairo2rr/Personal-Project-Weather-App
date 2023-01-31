@@ -1,11 +1,11 @@
-package com.example.customweatherapp.main.preferences
+package com.example.customweatherapp.preferences
 
 import android.app.Application
 
 class CustomWeatherApplication:Application() {
 
     companion object{
-        lateinit var prefers:Prefers
+        lateinit var prefers: Prefers
     }
 
     override fun onCreate() {

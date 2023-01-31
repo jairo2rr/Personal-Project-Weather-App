@@ -11,9 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
-import com.example.customweatherapp.main.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.WeatherPerDay
+import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.model.service.WeatherDbClient
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
 import kotlinx.coroutines.launch
@@ -38,7 +39,6 @@ class HomeFragment : Fragment() {
             latitude = it.getDouble(LATITUDE)
             longitude = it.getDouble(LONGITUDE)
         }
-
     }
 
     override fun onCreateView(

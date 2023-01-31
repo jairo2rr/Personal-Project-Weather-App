@@ -52,3 +52,8 @@ fun getHour(possibleDate:String):String{
 
     return "$hour:$minute"
 }
+
+fun String.toDate(): Date {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    return dateFormat.parse(this) as Date
+}
