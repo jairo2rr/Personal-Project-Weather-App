@@ -10,6 +10,7 @@
 
     <color name="light_blue">#e1f5fe</color>
     <color name="brown_menu">#40372D</color>
+    <color name="red_selected">#d50000</color>
     <color name="light_yellow">#FFF0DF</color>
     <color name="strong_gray">#777777</color>
     <color name="light_gray">#B7B7B7</color>

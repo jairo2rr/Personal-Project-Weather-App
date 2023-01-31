@@ -29,7 +29,9 @@ class WeatherDayActivity : AppCompatActivity() {
         binding = ActivityWeatherDayBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val weatherDuringDay = WeatherNextDaysAdapter(emptyList(),"during")
+        val weatherDuringDay = WeatherNextDaysAdapter(emptyList(),"during"){
+            item -> setPrincipalCard(item)
+        }
         time = intent.getStringExtra(EXTRA_TIME)
 
         // Verificar si este codigo estas bien
@@ -44,37 +46,31 @@ class WeatherDayActivity : AppCompatActivity() {
             dataFiltered =  getFilterDuringDay(data!!,time)
             weatherDuringDay.listWeather = dataFiltered
             weatherDuringDay.notifyDataSetChanged()
+            setPrincipalCard(principalDataCard)
+            binding.rvCardsHour.adapter = weatherDuringDay
+            binding.tvCityName.text = data?.city?.name
+            setExtraInformation()
+        }else{
+            Toast.makeText(this@WeatherDayActivity,"Error inesperado",Toast.LENGTH_LONG).show()
         }
-        setPrincipalCard(data)
-        binding.rvCardsHour.adapter = weatherDuringDay
-        binding.tvCityName.text = data?.city?.name
-        setExtraInformation(data)
     }
 
-    private fun setExtraInformation(data: PrincipalData?) {
-        if(data != null){
-            binding.tvLevelSea.text = "${principalDataCard.main.sea_level}"
-            binding.tvGroundprs.text = "${principalDataCard.main.grnd_level}"
-            binding.tvAtmosfericprs.text = "${principalDataCard.main.pressure}"
-            binding.tvHumidity.text = "${principalDataCard.main.humidity}%"
-            binding.tvVisibility.text = "${principalDataCard.visibility}"
-            binding.tvProbop.text = "${(principalDataCard.pop*100).toInt()}%"
-            return
-        }
-        Toast.makeText(this@WeatherDayActivity,"Error inesperado",Toast.LENGTH_LONG).show()
+    private fun setExtraInformation() {
+        binding.tvLevelSea.text = "${principalDataCard.main.sea_level}"
+        binding.tvGroundprs.text = "${principalDataCard.main.grnd_level}"
+        binding.tvAtmosfericprs.text = "${principalDataCard.main.pressure}"
+        binding.tvHumidity.text = "${principalDataCard.main.humidity}%"
+        binding.tvVisibility.text = "${principalDataCard.visibility}"
+        binding.tvProbop.text = "${(principalDataCard.pop*100).toInt()}%"
     }
 
-    private fun setPrincipalCard(data: PrincipalData?) {
-        if(data != null){
-            binding.tvDayText.text = principalDataCard.getDateComplete()
-            binding.tvClima.text = "${principalDataCard.weather[0].main}\n${principalDataCard.weather[0].description}"
-            binding.tvHour.text = principalDataCard.getHourDate()
-            binding.tvTemperature.text = "${principalDataCard.main.temp}°"
-            binding.tvFeelsLike.text = "${principalDataCard.main.temp_min}° - ${principalDataCard.main.temp_max}°"
-            binding.imgWeather.load("$ICON_IMAGE${principalDataCard.weather[0].icon}@2x.png")
-            return
-        }
-        Toast.makeText(this@WeatherDayActivity,"Error inesperado",Toast.LENGTH_LONG).show()
+    private fun setPrincipalCard(itemCard: WeatherPerDay) {
+        binding.tvDayText.text = itemCard.getDateComplete()
+        binding.tvClima.text = "${itemCard.weather[0].main}\n${this.principalDataCard.weather[0].description}"
+        binding.tvHour.text = itemCard.getHourDate()
+        binding.tvTemperature.text = "${itemCard.main.temp}°"
+        binding.tvFeelsLike.text = "${itemCard.main.temp_min}° - ${this.principalDataCard.main.temp_max}°"
+        binding.imgWeather.load("$ICON_IMAGE${itemCard.weather[0].icon}@2x.png")
     }
 
     private fun getFilterDuringDay(data:PrincipalData, time:String?):List<WeatherPerDay>{

@@ -1,6 +1,7 @@
 package com.example.customweatherapp.main
 
 import android.content.ClipData.Item
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,15 +40,13 @@ class PlanningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fabAddPlan.setOnClickListener {
-            initFragmentAddPlan()
+            initActivityAddPlan()
         }
     }
 
-    private fun initFragmentAddPlan() {
-        val fragmentAddPlan = AddPlanFragment()
-        parentFragmentManager.beginTransaction().replace(R.id.fragmentReplacer,fragmentAddPlan)
-            .addToBackStack(null)
-            .commit()
+    private fun initActivityAddPlan() {
+        val intent = Intent(context,AddPlanActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {

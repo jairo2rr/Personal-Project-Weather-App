@@ -16,4 +16,10 @@
     <string name="txt_visibility">Visibilidad</string>
     <string name="txt_probop">Probabilidad\nde precipitación</string>
     <string name="title_planning">Planifica</string>
+    <string name="subtitle_planning">Tu verano, tus salidas, tus paseos, etc.</string>
+    <string name="txt_title_plan">Título</string>
+    <string name="txt_description_plan">Descripción (Opcional)</string>
+    <string name="txt_notification_plan">Crear recordatorio</string>
+    <string name="txt_select_date">Escoger fecha</string>
+    <string name="txt_btn_save_plan">Guardar plan</string>
 </resources>
