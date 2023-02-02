@@ -1,5 +1,6 @@
 package com.example.customweatherapp.main
 
+import android.annotation.SuppressLint
 import android.content.ClipData.Item
 import android.content.Intent
 import android.os.Bundle
@@ -11,18 +12,22 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentPlanningBinding
 import com.example.customweatherapp.databinding.ItemPlannersBinding
 import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.recycler.PlansAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class PlanningFragment : Fragment() {
 
-    private var listPlans:ListPlans? = prefers.getListPlans()
-    private lateinit var binding:FragmentPlanningBinding
+    private var listPlans: ListPlans? = prefers.getListPlans()
+    private lateinit var binding: FragmentPlanningBinding
+    private var adapterPlan = PlansAdapter(ListPlans())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -40,11 +45,11 @@ class PlanningFragment : Fragment() {
         binding.fabAddPlan.setOnClickListener {
             initActivityAddPlan()
         }
-        Log.d("ext","This:${listPlans}")
-        if(listPlans == null || listPlans!!.isEmpty()){
+        Log.d("ext", "This:${listPlans}")
+        if (listPlans == null || listPlans!!.isEmpty()) {
             binding.recyclerView.isVisible = false
-        }else{
-            var adapterPlan = PlansAdapter(listPlans!!)
+        } else {
+            adapterPlan.listPlans = listPlans!!
             binding.tvNoPlans.isGone = true
             binding.imgNoPlans.isGone = true
             binding.recyclerView.adapter = adapterPlan
@@ -53,7 +58,7 @@ class PlanningFragment : Fragment() {
     }
 
     private fun initActivityAddPlan() {
-        val intent = Intent(context,AddPlanActivity::class.java)
+        val intent = Intent(context, AddPlanActivity::class.java)
         startActivity(intent)
     }
 
@@ -64,5 +69,15 @@ class PlanningFragment : Fragment() {
                 arguments = Bundle().apply {
                 }
             }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onStart() {
+        super.onStart()
+        listPlans = prefers.getListPlans()
+        if (listPlans != null) {
+            adapterPlan.notifyDataSetChanged()
+            adapterPlan.listPlans = listPlans!!
+        }
     }
 }

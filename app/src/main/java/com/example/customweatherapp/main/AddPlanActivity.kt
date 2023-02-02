@@ -1,6 +1,7 @@
 package com.example.customweatherapp.main
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.customweatherapp.databinding.ActivityAddPlanBinding
@@ -20,6 +21,7 @@ class AddPlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddPlanBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.tpNotification.setIs24HourView(true)
         val filteredList =
             dataStoraged?.getFilterHourPerDay(dataStoraged?.list?.get(0)?.dt_txt) ?: emptyList()
         val weatherNextDayAdapter = WeatherNextDaysAdapter(filteredList, "perday") { item ->
@@ -35,8 +37,8 @@ class AddPlanActivity : AppCompatActivity() {
             val plan = PlanWeather(
                 binding.etTitlePlan.text.toString(),
                 binding.etDescriptionPlan.text.toString(),
-                0,
-                0,
+                binding.tpNotification.hour,
+                binding.tpNotification.minute,
                 "",
                 itemSelected!!.dt_txt.toDate(),
                 itemSelected!!.weather[0].icon,
@@ -50,6 +52,7 @@ class AddPlanActivity : AppCompatActivity() {
                 listPlanStoraged!!.add(plan)
                 prefers.saveListPlans(listPlanStoraged!!)
             }
+            finish()
             return
         }
         Toast.makeText(this,"Debe rellenar todos los datos!",Toast.LENGTH_SHORT).show()

@@ -57,3 +57,12 @@ fun String.toDate(): Date {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     return dateFormat.parse(this) as Date
 }
+
+fun Date.toDayMonth():String{
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    var month = calendar.get(Calendar.MONTH)
+
+    return "$day/$month"
+}

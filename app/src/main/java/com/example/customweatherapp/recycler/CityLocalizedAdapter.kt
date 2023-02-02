@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import coil.load
 import com.example.customweatherapp.databinding.ItemCityFoundBinding
 import com.example.customweatherapp.model.explorar.CityLocalized
 import com.example.customweatherapp.model.explorar.CityLocalizedItem

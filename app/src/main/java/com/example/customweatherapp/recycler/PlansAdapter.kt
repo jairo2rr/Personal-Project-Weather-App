@@ -1,21 +1,26 @@
 package com.example.customweatherapp.recycler
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.example.customweatherapp.databinding.ItemPlannersBinding
+import com.example.customweatherapp.main.toDayMonth
 import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.model.plan.PlanWeather
+import kotlinx.coroutines.coroutineScope
 
 class PlansAdapter(var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
-    inner class PlansViewHolder(val binding: ItemPlannersBinding):RecyclerView.ViewHolder(binding.root){
+    inner class PlansViewHolder(val binding: ItemPlannersBinding):ViewHolder(binding.root){
         fun bind(plan:PlanWeather){
-            binding.imgIconPlan.load("https://openweathermap.org/img/wn/${plan.icon}@2x.png")
-            binding.tvDatePlan.text = plan.date.toString()
+            binding.tvDatePlan.text = plan.date.toDayMonth()
             binding.tvHourPlan.text = "${plan.hour}:${plan.minutes} ${plan.time}"
             binding.tvTitlePlan.text = plan.title
-            binding.tvTemperaturePlan.text = plan.temperature
+            binding.tvTemperaturePlan.text = "${plan.temperature}°C"
+            Log.d("iconsss","Icon: ${plan.icon}")
+            binding.imgIconPlan.load("https://openweathermap.org/img/wn/04d@2x.png")
         }
     }
 
