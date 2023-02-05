@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    /*Default values lat and lon*/
+    /*Default values for lat and lon*/
     private var latitude = -12.04318
     private var longitude = -77.02824
 
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     initPlanningFragment()
                     true
                 }
-                R.id.explorer ->{
+                R.id.explorer -> {
                     initExplorerFragment()
                     true
                 }

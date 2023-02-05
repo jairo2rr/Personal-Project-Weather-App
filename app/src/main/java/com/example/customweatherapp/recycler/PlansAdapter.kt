@@ -19,7 +19,6 @@ class PlansAdapter(var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.Pl
             binding.tvHourPlan.text = "${plan.hour}:${plan.minutes} ${plan.time}"
             binding.tvTitlePlan.text = plan.title
             binding.tvTemperaturePlan.text = "${plan.temperature}°C"
-            Log.d("iconsss","Icon: ${plan.icon}")
             binding.imgIconPlan.load("https://openweathermap.org/img/wn/04d@2x.png")
         }
     }

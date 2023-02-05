@@ -3,6 +3,7 @@ package com.example.customweatherapp.main
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.customweatherapp.databinding.ActivityAddPlanBinding
 import com.example.customweatherapp.model.PrincipalData
@@ -11,11 +12,12 @@ import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.model.plan.PlanWeather
 import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
+import com.example.customweatherapp.viewmodel.PlanViewModel
 
 class AddPlanActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlanBinding
     private var dataStoraged: PrincipalData? = prefers.getData()
-    private var listPlanStoraged: ListPlans? = prefers.getListPlans()
+    private val planViewModel:PlanViewModel by viewModels()
     private var itemSelected: WeatherPerDay? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +46,8 @@ class AddPlanActivity : AppCompatActivity() {
                 itemSelected!!.weather[0].icon,
                 itemSelected!!.main.temp.toString()
             )
-            if (listPlanStoraged == null) {
-                val listPlans = ListPlans()
-                listPlans.add(plan)
-                prefers.saveListPlans(listPlans)
-            } else {
-                listPlanStoraged!!.add(plan)
-                prefers.saveListPlans(listPlanStoraged!!)
-            }
+            planViewModel.savePlan(plan)
+            planViewModel.updateListPlans()
             finish()
             return
         }
