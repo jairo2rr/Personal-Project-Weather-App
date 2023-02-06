@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             Log.d(
                                 "debugLocation",
-                                "Lat: ${it.result}, Lon: ${it.result}"
+                                "Lat: ${it.result?.latitude}, Lon: ${it.result?.longitude}"
                             )
                             initHomeFragment()
                         }

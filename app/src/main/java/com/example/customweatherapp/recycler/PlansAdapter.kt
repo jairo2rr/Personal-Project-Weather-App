@@ -1,6 +1,5 @@
 package com.example.customweatherapp.recycler
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,6 @@ import com.example.customweatherapp.databinding.ItemPlannersBinding
 import com.example.customweatherapp.main.toDayMonth
 import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.model.plan.PlanWeather
-import kotlinx.coroutines.coroutineScope
 
 class PlansAdapter(var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
     inner class PlansViewHolder(val binding: ItemPlannersBinding):ViewHolder(binding.root){

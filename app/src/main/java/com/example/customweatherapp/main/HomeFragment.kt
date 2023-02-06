@@ -1,44 +1,39 @@
 package com.example.customweatherapp.main
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import coil.load
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.model.PrincipalData
 import com.example.customweatherapp.model.WeatherPerDay
-import com.example.customweatherapp.model.plan.ListPlans
-import com.example.customweatherapp.model.service.WeatherDbClient
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
-import kotlinx.coroutines.launch
-import java.util.*
+import com.example.customweatherapp.viewmodel.HomeViewModel
+import com.example.customweatherapp.viewmodel.HomeViewModelFactory
 
 private const val LATITUDE = "LATITUDE"
 private const val LONGITUDE = "LONGITUDE"
 
 class HomeFragment : Fragment() {
-    private var latitude: Double? = null
-    private var longitude: Double? = null
-    private var data: PrincipalData? = null
+    private var latitude: Double = arguments?.getDouble(LATITUDE) ?: 0.0
+    private var longitude: Double = arguments?.getDouble(LONGITUDE) ?: 0.0
+
+    private var timeForDetail = ""
 
     private lateinit var binding: FragmentHomeBinding
-    private val listWeather = emptyList<WeatherPerDay>()
-
-    private var dataStoraged: PrincipalData? = prefers.getData()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            latitude = it.getDouble(LATITUDE)
-            longitude = it.getDouble(LONGITUDE)
-        }
+    private val homeViewModel: HomeViewModel by activityViewModels {
+        HomeViewModelFactory(
+            latitude,
+            longitude,
+            getString(R.string.api_key)
+        )
     }
 
     override fun onCreateView(
@@ -49,46 +44,39 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weatherNextDayAdapter = WeatherNextDaysAdapter(listWeather, "perday"){
-            item -> changePrincipalCard(item)
+        val weatherNextDayAdapter = WeatherNextDaysAdapter(emptyList(), "perday") { item ->
+            run {
+                changePrincipalCard(item)
+                timeForDetail = item.dt_txt
+            }
         }
 
         binding.recyclerNextDays.adapter = weatherNextDayAdapter
-        lifecycleScope.launch {
-            val apikey = getString(R.string.api_key)
-            data = WeatherDbClient.service.getPrincipalData(latitude!!, longitude!!, apikey)
-            if (data == null) {
-                Toast.makeText(view.context, "Necesita conexion a internet", Toast.LENGTH_SHORT)
-                    .show()
-            } else {
-                prefers.saveData(data!!)
-                dataStoraged = prefers.getData()
-            }
-            if(dataStoraged != null){
-                data = dataStoraged
-                val firstData = data!!.list[0]
-                val dataFiltered = data!!.getFilterHourPerDay(firstData.dt_txt)
-                weatherNextDayAdapter.listWeather = dataFiltered
-                weatherNextDayAdapter.notifyDataSetChanged()
-                updateInfoCity()
-                changePrincipalCard(dataFiltered[0])
-                binding.btnVerMas.setOnClickListener {
-                    initWeatherDayActivity()
-                }
-            }else{
-                Toast.makeText(view.context, "Necesita activar la localizacion para actualizar datos.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-
+        homeViewModel.principalData.value!!
+        binding.btnVerMas.setOnClickListener {
+            initWeatherDayActivity(timeForDetail)
         }
+        homeViewModel.principalData.observe(viewLifecycleOwner) { data ->
+            updateInfoCity(data)
+        }
+        homeViewModel.listWeather.observe(viewLifecycleOwner) {
+
+            weatherNextDayAdapter.listWeather = it
+            weatherNextDayAdapter.notifyDataSetChanged()
+            if (it.isNotEmpty()) {
+                changePrincipalCard(it[0])
+                timeForDetail = it[0].dt_txt
+            }
+        }
+
     }
 
-    private fun updateInfoCity() {
-        val city = data!!.city
+    private fun updateInfoCity(data: PrincipalData) {
+        val city = data.city
         binding.tvCityRegion.text = city.name
         binding.tvCountry.text = city.country
     }
@@ -103,26 +91,13 @@ class HomeFragment : Fragment() {
         binding.tvVarianza.text = "${firstData.main.temp_min}° - ${firstData.main.temp_max}"
     }
 
-    private fun initWeatherDayActivity() {
-        val newData = data
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun initWeatherDayActivity(time: String) {
         val intent = Intent(binding.root.context, WeatherDayActivity::class.java).apply {
-            putExtra("data", newData)
-            putExtra("dt_txt", newData!!.list[0].dt_txt)
+            putExtra("data", homeViewModel.principalData.value)
+            putExtra("dt_txt", time)
         }
         startActivity(intent)
     }
 
-
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(LATITUDE, param1)
-                    putString(LONGITUDE, param2)
-                }
-            }
-    }
 }

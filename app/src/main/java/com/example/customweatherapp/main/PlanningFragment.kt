@@ -67,23 +67,14 @@ class PlanningFragment : Fragment() {
         startActivity(intent)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlanningFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     override fun onStart() {
         super.onStart()
         planViewModel.updateListPlans()
         planViewModel.listPlans.observe(viewLifecycleOwner) { listPlans ->
             if (listPlans != null) {
-                adapterPlan.notifyDataSetChanged()
                 adapterPlan.listPlans = listPlans
+                adapterPlan.notifyDataSetChanged()
             }
         }
     }

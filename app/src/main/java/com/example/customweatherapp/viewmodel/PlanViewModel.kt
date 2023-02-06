@@ -12,7 +12,7 @@ class PlanViewModel : ViewModel() {
     val listPlans: LiveData<ListPlans?> get() =mutableListPlans
 
     fun updateListPlans() {
-        mutableListPlans.postValue(prefers.getListPlans())
+        mutableListPlans.value = prefers.getListPlans()
     }
 
     fun savePlan(plan: PlanWeather) {
@@ -21,8 +21,9 @@ class PlanViewModel : ViewModel() {
             newList.add(plan)
             prefers.saveListPlans(newList)
         } else {
-            mutableListPlans.value?.add(plan)
-            prefers.saveListPlans(mutableListPlans.value!!)
+            val extraList = listPlans.value!!
+            extraList.add(plan)
+            prefers.saveListPlans(extraList)
         }
     }
 }
