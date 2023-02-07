@@ -8,11 +8,29 @@ import com.example.customweatherapp.model.plan.PlanWeather
 import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
 
 class PlanViewModel : ViewModel() {
-    private val mutableListPlans = MutableLiveData<ListPlans?>(prefers.getListPlans())
-    val listPlans: LiveData<ListPlans?> get() =mutableListPlans
+    private val _listPlans = MutableLiveData<ListPlans?>(prefers.getListPlans())
+    val listPlans: LiveData<ListPlans?> get() =_listPlans
+
+    private val _itemDeleted = MutableLiveData<PlanWeather>()
+    val itemDeleted:LiveData<PlanWeather> get() = _itemDeleted
+    private val _positionDeleted = MutableLiveData<Int>(-1)
+    val positionDeleted:LiveData<Int> get() = _positionDeleted
+
+    private val _extraList = MutableLiveData<ListPlans?>(listPlans.value)
+    val extraList: LiveData<ListPlans?> get() =_extraList
+
+    private var tempList = extraList.value
 
     fun updateListPlans() {
-        mutableListPlans.value = prefers.getListPlans()
+        _listPlans.value = prefers.getListPlans()
+        _extraList.value = _listPlans.value
+        tempList = extraList.value
+    }
+
+    fun setItemDeleted(plan: PlanWeather,position: Int){
+        _positionDeleted.value = position
+        _itemDeleted.value = plan
+        tempList = extraList.value
     }
 
     fun savePlan(plan: PlanWeather) {
@@ -26,4 +44,6 @@ class PlanViewModel : ViewModel() {
             prefers.saveListPlans(extraList)
         }
     }
+    
+    fun restoredPositionDeleted(){_positionDeleted.value = -1}
 }

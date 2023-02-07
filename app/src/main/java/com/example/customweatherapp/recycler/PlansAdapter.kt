@@ -9,8 +9,10 @@ import com.example.customweatherapp.databinding.ItemPlannersBinding
 import com.example.customweatherapp.main.toDayMonth
 import com.example.customweatherapp.model.plan.ListPlans
 import com.example.customweatherapp.model.plan.PlanWeather
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
 
-class PlansAdapter(var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
+class PlansAdapter(private var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
     inner class PlansViewHolder(val binding: ItemPlannersBinding):ViewHolder(binding.root){
         fun bind(plan:PlanWeather){
             binding.tvDatePlan.text = plan.date.toDayMonth()
@@ -28,6 +30,20 @@ class PlansAdapter(var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.Pl
 
     override fun onBindViewHolder(holder: PlansViewHolder, position: Int) {
         holder.bind(listPlans.get(position))
+    }
+    fun setListPlan(newList: ListPlans){
+        listPlans = newList
+        notifyDataSetChanged()
+    }
+    fun getListPlan() = listPlans
+    fun deleteItem(position:Int){
+        listPlans.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun restoreItem(plan:PlanWeather,position:Int){
+        listPlans.add(position,plan)
+        notifyItemInserted(position)
     }
 
     override fun getItemCount(): Int = listPlans.size
