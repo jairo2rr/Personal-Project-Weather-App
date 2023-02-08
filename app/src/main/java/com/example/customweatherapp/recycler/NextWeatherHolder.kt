@@ -2,12 +2,10 @@ package com.example.customweatherapp.recycler
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.customweatherapp.databinding.ActivityMainBinding
 import com.example.customweatherapp.databinding.ItemNextDaysBinding
-import com.example.customweatherapp.main.getDateComplete
-import com.example.customweatherapp.main.getHourDate
-import com.example.customweatherapp.model.Weather
-import com.example.customweatherapp.model.WeatherPerDay
+import com.example.customweatherapp.ui.view.getDateComplete
+import com.example.customweatherapp.ui.view.getHourDate
+import com.example.customweatherapp.data.model.WeatherPerDay
 
 class NextWeatherHolder(val binding: ItemNextDaysBinding,val type: String):RecyclerView.ViewHolder(binding.root){
     fun bind(weatherPerDay: WeatherPerDay){

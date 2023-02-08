@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customweatherapp.databinding.ItemNextDaysBinding
-import com.example.customweatherapp.model.WeatherPerDay
+import com.example.customweatherapp.data.model.WeatherPerDay
 
 class WeatherNextDaysAdapter(
     var listWeather: List<WeatherPerDay>,

@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.example.customweatherapp.databinding.ItemCityFoundBinding
-import com.example.customweatherapp.model.explorar.CityLocalized
-import com.example.customweatherapp.model.explorar.CityLocalizedItem
+import com.example.customweatherapp.data.model.explorar.CityLocalized
+import com.example.customweatherapp.data.model.explorar.CityLocalizedItem
 
-class CityLocalizedAdapter(var listCities:CityLocalized?,private val onItemClick: (CityLocalizedItem)->Unit):RecyclerView.Adapter<CityLocalizedAdapter.CityHolder>() {
+class CityLocalizedAdapter(var listCities: CityLocalized?, private val onItemClick: (CityLocalizedItem)->Unit):RecyclerView.Adapter<CityLocalizedAdapter.CityHolder>() {
 
     lateinit var bindItem:ItemCityFoundBinding
 

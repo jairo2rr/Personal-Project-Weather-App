@@ -6,15 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.example.customweatherapp.databinding.ItemPlannersBinding
-import com.example.customweatherapp.main.toDayMonth
-import com.example.customweatherapp.model.plan.ListPlans
-import com.example.customweatherapp.model.plan.PlanWeather
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
+import com.example.customweatherapp.ui.view.toDayMonth
+import com.example.customweatherapp.data.model.plan.ListPlans
+import com.example.customweatherapp.data.model.plan.PlanWeather
 
-class PlansAdapter(private var listPlans:ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
+class PlansAdapter(private var listPlans: ListPlans):RecyclerView.Adapter<PlansAdapter.PlansViewHolder>() {
     inner class PlansViewHolder(val binding: ItemPlannersBinding):ViewHolder(binding.root){
-        fun bind(plan:PlanWeather){
+        fun bind(plan: PlanWeather){
             binding.tvDatePlan.text = plan.date.toDayMonth()
             binding.tvHourPlan.text = "${plan.hour}:${plan.minutes} ${plan.time}"
             binding.tvTitlePlan.text = plan.title
@@ -41,7 +39,7 @@ class PlansAdapter(private var listPlans:ListPlans):RecyclerView.Adapter<PlansAd
         notifyItemRemoved(position)
     }
 
-    fun restoreItem(plan:PlanWeather,position:Int){
+    fun restoreItem(plan: PlanWeather, position:Int){
         listPlans.add(position,plan)
         notifyItemInserted(position)
     }
