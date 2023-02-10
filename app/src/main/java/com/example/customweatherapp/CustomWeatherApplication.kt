@@ -1,7 +1,10 @@
-package com.example.customweatherapp.preferences
+package com.example.customweatherapp
 
 import android.app.Application
+import com.example.customweatherapp.preferences.Prefers
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class CustomWeatherApplication:Application() {
 
     companion object{

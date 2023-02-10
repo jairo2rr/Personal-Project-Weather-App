@@ -1,28 +1,24 @@
 package com.example.customweatherapp.data.network
 
-import com.example.customweatherapp.core.RetrofitHelper
 import com.example.customweatherapp.data.model.PrincipalData
 import com.example.customweatherapp.data.model.explorar.CityLocalized
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.http.Query
+import javax.inject.Inject
 
-class WeatherDbService {
-    private val retrofit = RetrofitHelper.getRetrofit()
+class WeatherDbService @Inject constructor(private val api:WeatherDbClient){
 
     suspend fun getPrincipalData(latitud: Double, longitud: Double, apikey: String): PrincipalData? {
 
         return withContext(Dispatchers.IO) {
-            val response = retrofit.create(WeatherDbClient::class.java)
-                .getPrincipalData(latitud, longitud, apikey)
+            val response = api.getPrincipalData(latitud, longitud, apikey)
             response.body()
         }
     }
 
     suspend fun getCities(city:String, apiKey: String):CityLocalized{
         return withContext(Dispatchers.IO){
-            val response = retrofit.create(WeatherDbClient::class.java)
-                .getCities(city = city, apikey = apiKey)
+            val response = api.getCities(city = city, apikey = apiKey)
             response.body() ?: CityLocalized()
         }
     }

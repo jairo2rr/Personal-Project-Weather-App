@@ -3,12 +3,15 @@ package com.example.customweatherapp.ui.view
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateHandle
 import coil.load
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.FragmentHomeBinding
@@ -16,30 +19,28 @@ import com.example.customweatherapp.data.model.PrincipalData
 import com.example.customweatherapp.data.model.WeatherPerDay
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
 import com.example.customweatherapp.ui.viewmodel.HomeViewModel
-import com.example.customweatherapp.ui.viewmodel.HomeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 private const val LATITUDE = "LATITUDE"
 private const val LONGITUDE = "LONGITUDE"
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private var latitude: Double = arguments?.getDouble(LATITUDE) ?: 0.0
-    private var longitude: Double = arguments?.getDouble(LONGITUDE) ?: 0.0
+    private var latitude: Double? = 0.0
+    private var longitude: Double? = 0.0
 
     private var timeForDetail = ""
-
     private lateinit var binding: FragmentHomeBinding
-    private val homeViewModel: HomeViewModel by activityViewModels {
-        HomeViewModelFactory(
-            latitude,
-            longitude,
-            getString(R.string.api_key)
-        )
-    }
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        latitude = arguments?.getDouble(LATITUDE)
+        longitude = arguments?.getDouble(LONGITUDE)
+        Log.d("hellofragment", "$latitude ; $longitude")
         binding = FragmentHomeBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -47,7 +48,6 @@ class HomeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val weatherNextDayAdapter = WeatherNextDaysAdapter(emptyList(), "perday") { item ->
             run {
                 changePrincipalCard(item)
@@ -56,12 +56,16 @@ class HomeFragment : Fragment() {
         }
 
         binding.recyclerNextDays.adapter = weatherNextDayAdapter
-        homeViewModel.principalData.value!!
+//        homeViewModel.principalData.value!!
         binding.btnVerMas.setOnClickListener {
             initWeatherDayActivity(timeForDetail)
         }
         homeViewModel.principalData.observe(viewLifecycleOwner) { data ->
-            updateInfoCity(data)
+            if (data != null){
+                updateInfoCity(data)
+            }else{
+                Log.d("helloHome","$data")
+            }
         }
         homeViewModel.listWeather.observe(viewLifecycleOwner) {
 

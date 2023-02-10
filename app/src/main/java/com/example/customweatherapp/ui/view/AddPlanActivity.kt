@@ -8,7 +8,7 @@ import com.example.customweatherapp.databinding.ActivityAddPlanBinding
 import com.example.customweatherapp.data.model.PrincipalData
 import com.example.customweatherapp.data.model.WeatherPerDay
 import com.example.customweatherapp.data.model.plan.PlanWeather
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
 import com.example.customweatherapp.ui.viewmodel.PlanViewModel
 

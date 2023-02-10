@@ -1,27 +1,24 @@
 package com.example.customweatherapp.ui.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.customweatherapp.data.model.explorar.CityLocalized
-import com.example.customweatherapp.core.RetrofitHelper
-import com.example.customweatherapp.data.WeatherDbRepository
 import com.example.customweatherapp.domain.GetCitiesUC
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ExplorerViewModel(private val apiKey:String):ViewModel() {
+@HiltViewModel
+class ExplorerViewModel @Inject constructor(private val getCitiesUC: GetCitiesUC):ViewModel() {
     private val _listCities = MutableLiveData<CityLocalized>(CityLocalized())
     val listCities:LiveData<CityLocalized> get() = _listCities
 
-    fun searchCity(nameCity:String){
+    fun searchCity(nameCity:String, apiKey: String){
         viewModelScope.launch {
-            val citiesLocalized = GetCitiesUC().invoke(nameCity,apiKey)
+            val citiesLocalized = getCitiesUC(nameCity,apiKey)
             _listCities.value = citiesLocalized
         }
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-class ExplorerViewModelFactory(private val apiKey:String):ViewModelProvider.Factory{
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ExplorerViewModel(apiKey) as T
     }
 }

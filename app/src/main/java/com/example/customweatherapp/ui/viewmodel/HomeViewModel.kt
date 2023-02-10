@@ -1,26 +1,38 @@
 package com.example.customweatherapp.ui.viewmodel
 
+import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.customweatherapp.ui.view.getFilterHourPerDay
 import com.example.customweatherapp.data.model.PrincipalData
 import com.example.customweatherapp.data.model.WeatherPerDay
-import com.example.customweatherapp.core.RetrofitHelper
-import com.example.customweatherapp.data.WeatherDbRepository
 import com.example.customweatherapp.domain.GetPrincipalDataUC
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.R
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(lat: Double, lon: Double, apiKey: String) : ViewModel() {
-    private val _principalData = MutableLiveData<PrincipalData>(prefers.getData())
-    val principalData: LiveData<PrincipalData> get() = _principalData
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getPrincipalDataUC: GetPrincipalDataUC,
+    private val state: SavedStateHandle,
+    app:Application
+) : ViewModel() {
+    private val _principalData = MutableLiveData<PrincipalData?>(prefers.getData())
+    val principalData: LiveData<PrincipalData?> get() = _principalData
 
     private val _listWeather = MutableLiveData<List<WeatherPerDay>>(emptyList())
     val listWeather: LiveData<List<WeatherPerDay>> get() = _listWeather
 
     init {
+        val apiKey = app.getString(R.string.api_key)
         viewModelScope.launch {
-            val data: PrincipalData? = GetPrincipalDataUC().invoke(lat, lon, apiKey)
-
+            val data: PrincipalData? = getPrincipalDataUC.invoke(state["LATITUDE"] ?: 0.0, state["LONGITUDE"]?: 0.0,apiKey)
+            Log.d("helloviewmodel","${state["LATITUDE"] ?: 1.0} ; ${state["LONGITUDE"] ?: 1.0}")
             data?.let {
                 prefers.saveData(it)
                 _principalData.value = it
@@ -36,13 +48,3 @@ class HomeViewModel(lat: Double, lon: Double, apiKey: String) : ViewModel() {
 
 }
 
-@Suppress("UNCHECKED_CAST")
-class HomeViewModelFactory(
-    private val lat: Double,
-    private val lon: Double,
-    private val apiKey: String
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeViewModel(lat, lon, apiKey) as T
-    }
-}

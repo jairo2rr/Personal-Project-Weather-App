@@ -11,14 +11,16 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.databinding.ActivityMainBinding
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.data.model.PrincipalData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var bottomNav: BottomNavigationView
@@ -88,6 +90,7 @@ class MainActivity : AppCompatActivity() {
             putDouble("LATITUDE", latitude)
             putDouble("LONGITUDE", longitude)
         }
+        Log.d("helloactivity","$latitude ; $longitude")
         val homeFragment = HomeFragment().apply { arguments = bundle }
         supportFragmentManager.beginTransaction().replace(binding.fragmentReplacer.id, homeFragment)
             .commit()

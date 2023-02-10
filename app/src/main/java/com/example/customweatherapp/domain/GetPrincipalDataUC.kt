@@ -2,10 +2,10 @@ package com.example.customweatherapp.domain
 
 import com.example.customweatherapp.data.WeatherDbRepository
 import com.example.customweatherapp.data.model.PrincipalData
+import javax.inject.Inject
 
-class GetPrincipalDataUC {
 
-    private val repository = WeatherDbRepository()
+class GetPrincipalDataUC @Inject constructor(private val repository: WeatherDbRepository){
 
     suspend operator fun invoke(lat:Double,lon:Double,apiKey:String):PrincipalData?{
         return repository.getPrincipalData(lat,lon,apiKey)

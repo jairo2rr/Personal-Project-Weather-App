@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.customweatherapp.data.model.plan.ListPlans
 import com.example.customweatherapp.data.model.plan.PlanWeather
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.CustomWeatherApplication.Companion.prefers
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PlanViewModel : ViewModel() {
+@HiltViewModel
+class PlanViewModel @Inject constructor(): ViewModel() {
     private val _listPlans = MutableLiveData<ListPlans?>(prefers.getListPlans())
     val listPlans: LiveData<ListPlans?> get() =_listPlans
 

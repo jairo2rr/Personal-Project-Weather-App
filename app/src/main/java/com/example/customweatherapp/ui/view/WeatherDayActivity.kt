@@ -12,9 +12,11 @@ import com.example.customweatherapp.data.model.PrincipalData
 import com.example.customweatherapp.data.model.WeatherPerDay
 import com.example.customweatherapp.recycler.WeatherNextDaysAdapter
 import com.example.customweatherapp.ui.viewmodel.WeatherDayViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@AndroidEntryPoint
 class WeatherDayActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_DATA = "data"

@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customweatherapp.databinding.FragmentPlanningBinding
 import com.example.customweatherapp.data.model.plan.ListPlans
-import com.example.customweatherapp.preferences.CustomWeatherApplication.Companion.prefers
+import com.example.customweatherapp.CustomWeatherApplication.Companion.prefers
 import com.example.customweatherapp.recycler.PlansAdapter
 import com.example.customweatherapp.ui.viewmodel.PlanViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class PlanningFragment : Fragment() {
 
     private val planViewModel: PlanViewModel by activityViewModels()
