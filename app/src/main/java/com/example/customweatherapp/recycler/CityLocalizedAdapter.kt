@@ -1,23 +1,21 @@
 package com.example.customweatherapp.recycler
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import coil.load
 import com.example.customweatherapp.databinding.ItemCityFoundBinding
-import com.example.customweatherapp.data.model.explorar.CityLocalized
-import com.example.customweatherapp.data.model.explorar.CityLocalizedItem
+import com.example.customweatherapp.data.model.explorar.CityItemModel
+import com.example.customweatherapp.domain.model.CityItem
 
-class CityLocalizedAdapter(var listCities: CityLocalized?, private val onItemClick: (CityLocalizedItem)->Unit):RecyclerView.Adapter<CityLocalizedAdapter.CityHolder>() {
+class CityLocalizedAdapter(var listCities: List<CityItem>, private val onItemClick: (CityItem)->Unit):RecyclerView.Adapter<CityLocalizedAdapter.CityHolder>() {
 
     lateinit var bindItem:ItemCityFoundBinding
 
     inner class CityHolder(
         private val binding: ItemCityFoundBinding
     ):ViewHolder(binding.root){
-        fun bind(cityLocalized: CityLocalizedItem){
+        fun bind(cityLocalized: CityItem){
             binding.tvCity.text = cityLocalized.name
             binding.tvCountry.text = cityLocalized.country
         }

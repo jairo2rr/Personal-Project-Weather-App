@@ -2,6 +2,7 @@ package com.example.customweatherapp.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.example.customweatherapp.data.WeatherDbRepository
+import com.example.customweatherapp.data.database.dao.CityItemDao
 import com.example.customweatherapp.data.network.WeatherDbClient
 import com.example.customweatherapp.data.network.WeatherDbService
 import com.example.customweatherapp.domain.GetPrincipalDataUC
@@ -46,8 +47,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRepository(service:WeatherDbService):WeatherDbRepository{
-        return WeatherDbRepository(service)
+    fun provideRepository(service:WeatherDbService, cityItemDao: CityItemDao):WeatherDbRepository{
+        return WeatherDbRepository(service,cityItemDao)
     }
 
     @Provides

@@ -15,10 +15,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.customweatherapp.R
 import com.example.customweatherapp.data.model.PrincipalData
-import com.example.customweatherapp.data.model.explorar.CityLocalized
+import com.example.customweatherapp.data.model.explorar.CityItemModel
 import com.example.customweatherapp.databinding.FragmentExplorerBinding
 import com.example.customweatherapp.domain.GetCitiesUC
 import com.example.customweatherapp.domain.GetPrincipalDataUC
+import com.example.customweatherapp.domain.model.CityItem
 import com.example.customweatherapp.recycler.CityLocalizedAdapter
 import com.example.customweatherapp.ui.viewmodel.ExplorerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,8 @@ class ExplorerFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = CityLocalizedAdapter(CityLocalized()) { city ->
+        adapter = CityLocalizedAdapter(emptyList()) { city ->
+            explorerViewModel.addToListSearched(city)
             lifecycleScope.launch(Dispatchers.IO) {
                 val data = getPrincipalDataUC(
                     city.lat,
@@ -90,7 +92,8 @@ class ExplorerFragment : Fragment() {
             }
 
             override fun onQueryTextChange(textCity: String?): Boolean {
-//                filterCities(textCity)
+                if(textCity != null && textCity == "")
+                    explorerViewModel.getListFromDb()
                 if (textCity != "" && textCity != null)
                     explorerViewModel.searchCity(textCity,apikey)
                 return true
@@ -103,21 +106,9 @@ class ExplorerFragment : Fragment() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun filterCities(textCity: String?) {
-        val apikey = getString(R.string.api_key)
-        if (textCity == "") {
-            adapter.listCities = CityLocalized()
-            adapter.notifyDataSetChanged()
-        } else if (textCity != null) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val citiesLocalized =
-                    getCitiesUC(textCity, apikey)
-                withContext(Dispatchers.Main) {
-                    adapter.listCities = citiesLocalized
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
+    override fun onStart() {
+        super.onStart()
+        explorerViewModel.getListFromDb()
     }
 
 }
